@@ -58,6 +58,62 @@ The matchmaking service will be running on `http://localhost:50052`.
 
 You can create a new game by making gRPC requests to the matchmaking service. Refer to the API documentation or example code for details on how to use the matchmaking service to create and join games.
 
+## Game Rules
+
+Explain the rules and objectives of your online game. Include any special mechanics, scoring systems, or winning conditions. Use code snippets or diagrams to illustrate important game concepts. Here's an example section:
+
+In our online game, players compete to achieve the highest score by collecting items and completing challenges. Here are some key rules:
+
+- Players move using the arrow keys.
+- Collect items to earn points.
+- Complete challenges to unlock power-ups.
+- The player with the highest score after a certain time wins the game.
+
+## Examples
+
+Provide usage examples and code snippets to help users understand how to interact with your gRPC APIs. Include both client and server-side examples. Here's an example section:
+
+### Creating a Game (Client-Side)
+
+```typescript
+import { GameServiceClient } from './grpc/generated/game_grpc_pb';
+import { CreateGameRequest } from './grpc/generated/game_pb';
+
+const client = new GameServiceClient('localhost:50051', grpc.credentials.createInsecure());
+
+const request = new CreateGameRequest();
+request.setMapId(1);
+request.setPlayersCount(4);
+
+client.createGame(request, (error, response) => {
+  if (!error) {
+    console.log(`Game created with ID: ${response.getGameId()}`);
+  } else {
+    console.error('Error creating the game:', error);
+  }
+});
+```
+
+### Joining a Game (Server-Side)
+
+```typescript
+// Handle gRPC request to join a game
+function joinGame(call, callback) {
+  const gameId = call.request.getGameId();
+  const playerId = generatePlayerId(); // Implement player ID generation
+  const success = addPlayerToGame(gameId, playerId); // Implement game/player management logic
+
+  if (success) {
+    callback(null, { playerId });
+  } else {
+    callback(new Error('Failed to join the game'));
+  }
+}
+
+// Register the joinGame function as a gRPC service method
+server.addService(gameProto.GameService.service, { joinGame });
+```
+
 ## Contributing
 
 We welcome contributions from the community! If you'd like to contribute to this project, please follow these steps:
