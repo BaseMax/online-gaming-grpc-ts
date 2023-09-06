@@ -1,73 +1,132 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Online Gaming with gRPC in TypeScript
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to the Online Gaming project built with gRPC and TypeScript. This project demonstrates how to create a real-time game server and matchmaking service using the gRPC framework.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Getting Started
 
-## Description
+### Prerequisites
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Before you begin, ensure you have met the following requirements:
 
-## Installation
+- Node.js: [Download and install Node.js](https://nodejs.org/).
+- npm (Node Package Manager): npm comes bundled with Node.js, so no additional installation is required.
 
-```bash
-$ npm install
+### Installation
+
+Clone the repository:
+
+   ```bash
+   git clone https://github.com/BaseMax/online-gaming-grpc-ts.git
+   cd online-gaming-grpc-ts
+   ```
+
+Install project dependencies:
+
+  ```bash
+  npm install
+  ```
+
+### Building
+
+Build the project by running:
+
+  ```bash
+  npm run build
+  ```
+
+### Usage
+
+To start the game server, run the following command:
+
+  ```bash
+  npm run start:server
+  ```
+
+The game server will be running on `http://localhost:50051`.
+
+### Starting the Matchmaking Service
+
+To start the matchmaking service, run the following command:
+
+  ```bash
+  npm run start:matchmaking
+  ```
+
+The matchmaking service will be running on `http://localhost:50052`.
+
+### Creating a Game
+
+You can create a new game by making gRPC requests to the matchmaking service. Refer to the API documentation or example code for details on how to use the matchmaking service to create and join games.
+
+## Game Rules
+
+Explain the rules and objectives of your online game. Include any special mechanics, scoring systems, or winning conditions. Use code snippets or diagrams to illustrate important game concepts. Here's an example section:
+
+In our online game, players compete to achieve the highest score by collecting items and completing challenges. Here are some key rules:
+
+- Players move using the arrow keys.
+- Collect items to earn points.
+- Complete challenges to unlock power-ups.
+- The player with the highest score after a certain time wins the game.
+
+## Examples
+
+Provide usage examples and code snippets to help users understand how to interact with your gRPC APIs. Include both client and server-side examples. Here's an example section:
+
+### Creating a Game (Client-Side)
+
+```typescript
+import { GameServiceClient } from './grpc/generated/game_grpc_pb';
+import { CreateGameRequest } from './grpc/generated/game_pb';
+
+const client = new GameServiceClient('localhost:50051', grpc.credentials.createInsecure());
+
+const request = new CreateGameRequest();
+request.setMapId(1);
+request.setPlayersCount(4);
+
+client.createGame(request, (error, response) => {
+  if (!error) {
+    console.log(`Game created with ID: ${response.getGameId()}`);
+  } else {
+    console.error('Error creating the game:', error);
+  }
+});
 ```
 
-## Running the app
+### Joining a Game (Server-Side)
 
-```bash
-# development
-$ npm run start
+```typescript
+// Handle gRPC request to join a game
+function joinGame(call, callback) {
+  const gameId = call.request.getGameId();
+  const playerId = generatePlayerId(); // Implement player ID generation
+  const success = addPlayerToGame(gameId, playerId); // Implement game/player management logic
 
-# watch mode
-$ npm run start:dev
+  if (success) {
+    callback(null, { playerId });
+  } else {
+    callback(new Error('Failed to join the game'));
+  }
+}
 
-# production mode
-$ npm run start:prod
+// Register the joinGame function as a gRPC service method
+server.addService(gameProto.GameService.service, { joinGame });
 ```
 
-## Test
+## Contributing
 
-```bash
-# unit tests
-$ npm run test
+We welcome contributions from the community! If you'd like to contribute to this project, please follow these steps:
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Fork the repository.
+- Create a new branch for your feature or bug fix.
+- Make your changes and commit them with a clear and concise commit message.
+- Push your changes to your fork.
+- Create a pull request to the main repository's main branch.
+- Please ensure your code follows best practices and includes appropriate tests.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the GPL-3.0 License.
+
+Copyright 2023, Max Base
