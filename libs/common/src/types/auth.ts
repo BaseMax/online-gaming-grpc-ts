@@ -753,7 +753,7 @@ export const Players = {
   },
 };
 
-export interface UsersService {
+export interface UsersServiceController {
   CreateUser(request: CreateUserDto): Promise<User>;
   FindAllUsers(request: Empty): Promise<Users>;
   FindOneUser(request: FindOneUserDto): Promise<User>;
@@ -763,7 +763,7 @@ export interface UsersService {
 }
 
 export const UsersServiceServiceName = "auth.UsersService";
-export class UsersServiceClientImpl implements UsersService {
+export class UsersServiceClientImpl implements UsersServiceController {
   private readonly rpc: Rpc;
   private readonly service: string;
   constructor(rpc: Rpc, opts?: { service?: string }) {
@@ -778,37 +778,43 @@ export class UsersServiceClientImpl implements UsersService {
   }
   CreateUser(request: CreateUserDto): Promise<User> {
     const data = CreateUserDto.encode(request).finish();
-    const promise = this.rpc.request(this.service, "CreateUser", data);
+    const promise = this.rpc.request(this.service, 'CreateUser', data);
     return promise.then((data) => User.decode(_m0.Reader.create(data)));
   }
 
   FindAllUsers(request: Empty): Promise<Users> {
     const data = Empty.encode(request).finish();
-    const promise = this.rpc.request(this.service, "FindAllUsers", data);
+    const promise = this.rpc.request(this.service, 'FindAllUsers', data);
     return promise.then((data) => Users.decode(_m0.Reader.create(data)));
   }
 
   FindOneUser(request: FindOneUserDto): Promise<User> {
     const data = FindOneUserDto.encode(request).finish();
-    const promise = this.rpc.request(this.service, "FindOneUser", data);
+    const promise = this.rpc.request(this.service, 'FindOneUser', data);
     return promise.then((data) => User.decode(_m0.Reader.create(data)));
   }
 
   UpdateUser(request: UpdateUserDto): Promise<User> {
     const data = UpdateUserDto.encode(request).finish();
-    const promise = this.rpc.request(this.service, "UpdateUser", data);
+    const promise = this.rpc.request(this.service, 'UpdateUser', data);
     return promise.then((data) => User.decode(_m0.Reader.create(data)));
   }
 
   RemoveUser(request: FindOneUserDto): Promise<User> {
     const data = FindOneUserDto.encode(request).finish();
-    const promise = this.rpc.request(this.service, "RemoveUser", data);
+    const promise = this.rpc.request(this.service, 'RemoveUser', data);
     return promise.then((data) => User.decode(_m0.Reader.create(data)));
   }
 
   QueryUsers(request: Observable<PaginationDto>): Observable<Users> {
-    const data = request.pipe(map((request) => PaginationDto.encode(request).finish()));
-    const result = this.rpc.bidirectionalStreamingRequest(this.service, "QueryUsers", data);
+    const data = request.pipe(
+      map((request) => PaginationDto.encode(request).finish()),
+    );
+    const result = this.rpc.bidirectionalStreamingRequest(
+      this.service,
+      'QueryUsers',
+      data,
+    );
     return result.pipe(map((data) => Users.decode(_m0.Reader.create(data))));
   }
 }

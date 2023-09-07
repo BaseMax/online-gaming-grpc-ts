@@ -1,11 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { User, CreateUserDto, UpdateUserDto, Game, Games } from '@app/common';
+import { randomUUID } from 'crypto';
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
+  private readonly users: User[] = [];
+  onModuleInit() {
+    for (let i = 0; i <= 100; i++) {
+      this.create({ username: randomUUID(), password: randomUUID() });
+    }
+  }
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    const user: User = {
+      ...createUserDto,
+      games: { games: [] },
+      id: randomUUID(),
+    };
+    this.users.push();
+    return user;
   }
 
   findAll() {
