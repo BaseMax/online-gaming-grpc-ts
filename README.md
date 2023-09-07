@@ -170,6 +170,10 @@ service GameService {
 
 ```
 
+## Architecture
+
+![architecture](./assest/architecture.png)
+
 ## Examples
 
 Provide usage examples and code snippets to help users understand how to interact with your gRPC APIs. Include both client and server-side examples. Here's an example section:
