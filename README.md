@@ -113,6 +113,63 @@ interface Game {
 }
 ```
 
+## Server PROTO GRPC
+
+```proto
+
+message User {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  Games games = 4;
+}
+
+message Games {
+  repeated Game game = 1;
+}
+
+message Game {
+  string id = 1;
+  string name = 2;
+  Members members = 3;
+  string status = 4;
+  int32 memberNumber = 5;
+}
+
+message Members {
+  repeated User user = 1;
+}
+
+service AuthService {
+  rpc SignUp(SignUpDto) return (SignUpType){}
+  rpc Login(LoginDto) return (LoginType) {}
+}
+
+service UsersService {
+  rpc CreateUser (CreateUserDto) returns (User) {}
+  rpc FindAllUsers (Empty) returns (Users) {}
+  rpc FindOneUser (FindOneUserDto) returns (User) {}
+  rpc UpdateUser (UpdateUserDto) returns (User) {}
+  rpc RemoveUser (FindOneUserDto) returns (User) {}
+  rpc QueryUsers (stream PaginationDto) returns (stream Users) {}
+}
+
+service GameService {
+  rpc CreateGame (CreateGameDto) returns (Game) {}
+  rpc FindAllGames (Empty) returns (Games) {}
+  rpc JoinGame(JoinGameDto) returns (Game) {}
+  rpc FindOneGame (FindOneGameDto) returns (Game) {}
+  rpc StartGame (StartGameDto) returns (Game) {}
+  rpc AddUserToGame (AddUserToGameDto) returns (Game) {}
+  rpc ListAvailableGames (stream PaginationDto) returns (stream Games) {}
+  rpc CollectPoint (CollectPointDto) returns (CollectPointType){}
+  rpc EndGame(EndGameDto) returns (EndGameType){}
+  rpc ListMembersWithScores(ListMemberDto) returns (Users) {}
+  rpc SaveMemberScore(MemberScoreDto) returns (Members) {}
+}
+
+```
+
 ## Examples
 
 Provide usage examples and code snippets to help users understand how to interact with your gRPC APIs. Include both client and server-side examples. Here's an example section:
