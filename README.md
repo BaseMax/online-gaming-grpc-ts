@@ -172,7 +172,7 @@ service GameService {
 
 ## Architecture
 
-![architecture](./assest/architecture.png)
+![architecture](./assest/architecture.jpg)
 
 ## Examples
 
