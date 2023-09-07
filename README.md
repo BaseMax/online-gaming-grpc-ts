@@ -172,7 +172,7 @@ service GameService {
 
 ## Architecture
 
-![architecture](./assest/architecture.jpg)
+![architecture](https://github.com/BaseMax/online-gaming-grpc-ts/blob/develop/assets/architecture.jpg)
 
 ## Examples
 
