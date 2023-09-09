@@ -8,7 +8,6 @@ export interface User {
   id: string;
   username: string;
   password: string;
-  games: Games | undefined;
 }
 
 export interface Users {
@@ -37,16 +36,6 @@ export interface PaginationDto {
   skip: number;
 }
 
-export interface Games {
-  games: Game[];
-}
-
-export interface Game {
-  id: string;
-  name: string;
-  players: Players | undefined;
-  active: boolean;
-}
 
 export interface Players {
   users: User[];
