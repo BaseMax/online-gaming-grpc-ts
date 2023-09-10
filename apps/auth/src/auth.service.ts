@@ -1,20 +1,23 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { CreateUserDto, UsersServiceClient } from '@app/common';
-import { ClientGrpc } from '@nestjs/microservices';
+import { CreateUserDto } from '@app/common';
+import { PrismaService } from '../../../libs/common/src/database/database.module';
 
 @Injectable()
-export class AuthService implements OnModuleInit {
-  private userService: UsersServiceClient;
-
-  constructor(@Inject('auth') private client: ClientGrpc) {}
-
-  onModuleInit() {
-    this.userService = this.client.getService<UsersServiceClient>('auth');
+export class AuthService {
+  constructor(private prismaService: PrismaService) {}
+  async login(loginRequest: any) {
+    const { username, password } = loginRequest;
   }
 
-  async login(loginDto: any) {}
-
-  async register(registerDto: CreateUserDto) {}
+  async signup(registerDto: CreateUserDto) {
+    const { username, password } = registerDto;
+    const uesrFound = await this.prismaService.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+    
+  }
 
   async verifyAccessToken(request: any): Promise<any> {}
 }
