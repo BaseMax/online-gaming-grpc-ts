@@ -2,25 +2,38 @@ syntax = "proto3";
 
 package auth;
 
-import  "./proto/user.proto";
-
 
 service AuthService {
-  rpc SignUp(CreateUserDto) returns (User) {}
-  rpc Login(LoginRequest) returns (User) {}
-  rpc RessetPassword(RessetPasswordRequest) returns (User){}
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
+  rpc Login(LoginReqeust) returns (LoginResponse) {}
+  rpc RessetPassword(RessetPasswordRequest) returns (RessetPasswordResponse){}
+}
+
+message SignUpRequest {
+  
+}
+
+message SignUpResponse {
+
 }
 
 
-message LoginRequest {
+message LoginReqeust {
 
 }
+
+message LoginResponse {
+
+}
+
 
 message RessetPasswordRequest {
 
 }
 
+message RessetPasswordResponse {
 
+}
 
 
 

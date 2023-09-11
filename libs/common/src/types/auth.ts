@@ -4,86 +4,57 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
-export interface User {
-  id: string;
-  username: string;
-  password: string;
+export interface SignUpRequest {
 }
 
-export interface Users {
-  users: User[];
+export interface SignUpResponse {
 }
 
-export interface CreateUserDto {
-  username: string;
-  password: string;
+export interface LoginReqeust {
 }
 
-export interface Empty {
+export interface LoginResponse {
 }
 
-export interface FindOneUserDto {
-  id: string;
+export interface RessetPasswordRequest {
 }
 
-export interface UpdateUserDto {
-  id: string;
-  username: string;
-}
-
-export interface PaginationDto {
-  page: number;
-  skip: number;
-}
-
-
-export interface Players {
-  users: User[];
+export interface RessetPasswordResponse {
 }
 
 export const AUTH_PACKAGE_NAME = "auth";
 
-export interface UsersServiceClient {
-  createUser(request: CreateUserDto): Observable<User>;
+export interface AuthServiceClient {
+  signUp(request: SignUpRequest): Observable<SignUpResponse>;
 
-  findAllUsers(request: Empty): Observable<Users>;
+  login(request: LoginReqeust): Observable<LoginResponse>;
 
-  findOneUser(request: FindOneUserDto): Observable<User>;
-
-  updateUser(request: UpdateUserDto): Observable<User>;
-
-  removeUser(request: FindOneUserDto): Observable<User>;
-
-  queryUsers(request: Observable<PaginationDto>): Observable<Users>;
+  ressetPassword(request: RessetPasswordRequest): Observable<RessetPasswordResponse>;
 }
 
-export interface UsersServiceController {
-  createUser(request: CreateUserDto): Promise<User> | Observable<User> | User;
+export interface AuthServiceController {
+  signUp(request: SignUpRequest): Promise<SignUpResponse> | Observable<SignUpResponse> | SignUpResponse;
 
-  findAllUsers(request: Empty): Promise<Users> | Observable<Users> | Users;
+  login(request: LoginReqeust): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
-  findOneUser(request: FindOneUserDto): Promise<User> | Observable<User> | User;
-
-  updateUser(request: UpdateUserDto): Promise<User> | Observable<User> | User;
-
-  removeUser(request: FindOneUserDto): Promise<User> | Observable<User> | User;
-
-  queryUsers(request: Observable<PaginationDto>): Observable<Users>;
+  ressetPassword(
+    request: RessetPasswordRequest,
+  ): Promise<RessetPasswordResponse> | Observable<RessetPasswordResponse> | RessetPasswordResponse;
 }
 
-export function UsersServiceControllerMethods() {
+export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createUser", "findAllUsers", "findOneUser", "updateUser", "removeUser"];
+    const grpcMethods: string[] = ["signUp", "login", "ressetPassword"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
     }
-    const grpcStreamMethods: string[] = ["queryUsers"];
+    const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("UsersService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const USERS_SERVICE_NAME = "UsersService";
+export const AUTH_SERVICE_NAME = "AuthService";
