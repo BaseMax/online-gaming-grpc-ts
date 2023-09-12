@@ -10,16 +10,16 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   login(request: any) {
-    // return this.authService.login(request);
+    return this.authService.login(request);
   }
 
   signUp(request: any) {
-    // return this.authService.signup(request);
+    return this.authService.signUp(request);
   }
 
-  verify(request: any) {
-    // return this.authService.verifyAccessToken(request);
+  ressetPassword(request: any) {
+    return this.authService.ressetPassword(request);
   }
 
-  ressetPassword(request: any) {}
+  verify(request: any) {}
 }

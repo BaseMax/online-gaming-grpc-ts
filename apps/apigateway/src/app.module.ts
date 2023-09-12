@@ -4,6 +4,8 @@ import { GameModule } from './game/game.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 
 @Module({
-  imports: [AuthModule, GameModule, LeaderboardModule],
+  imports: [AuthModule, ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

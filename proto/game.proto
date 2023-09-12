@@ -4,11 +4,10 @@ package game;
 
 
 service GameService {
-  rpc CreateGame (CreateGameDto) returns (Game) {}
-  rpc FindAllGames (Empty) returns (Games) {}
-  rpc FindOneGame (FindOneGameDto) returns (Game) {}
-  rpc StartGame (StartGameDto) returns (Game) {}
-  rpc AddUserToGame (AddUserToGameDto) returns (Game) {}
+  rpc CreateGame (CreateGameRequest) returns (CreateGameResponse) {}
+  rpc FindOneGame (FindOneGameRequest) returns (FindOneGameResponse) {}
+  rpc StartGame (StartGameRequest) returns (StartGameResponse) {}
+  rpc AddUserToGame (AddUserToGameRequest) returns (AddUserToGameResponse) {}
   rpc ListAvailableGames (stream PaginationDto) returns (stream Games) {}
 }
 
@@ -19,33 +18,56 @@ message Game {
   bool started = 4;
 }
 
+message CreateGameRequest {
+  string name = 1;
+  int32 maxMembers = 2;
+  string status = 3;
+  int32 creator = 4;
+}
+
+message CreateGameResponse {
+  string name = 1;
+  string status = 2;
+} 
+
+message FindOneGameRequest {
+  string id = 1;
+}
+
+message FindOneGameResponse {
+  string name = 1;
+  string status = 2;
+}
+
+message StartGameRequest {
+  string creator = 1;
+}
+
+message StartGameResponse {
+  int32 id =1;
+}
+
+message AddUserToGameRequest {
+  int32 userToBeAdded = 1;
+  int32 gameId = 2;
+  int32 creatorId = 3;
+}
+
+message AddUserToGameResponse {
+  string name = 1;
+  string status = 2;
+}
+
+message ListAvailableGamesRequest {
+
+}
+
+message ListAvailableGamesResponse {
+
+}
+
 message Games { 
   repeated Game games = 1;
-}
-
-message Empty {
-
-}
-
-
-message CreateGameDto {
-
-}
-
-message FindOneGameDto {
-
-}
-
-message StartGame {
-
-}
-
-message AddUserToGameDto {
-
-}
-
-message StartGameDto{ 
-
 }
 
 message PaginationDto {
