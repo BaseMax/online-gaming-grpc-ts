@@ -13,9 +13,9 @@
   "projects": {
     "apigateway": {
       "type": "application",
-      "root": "./",
+      "root": "apps/apigateway",
       "entryFile": "src/main",
-      "sourceRoot": "apps/apigateway/src",
+      "sourceRoot": "./",
       "compilerOptions": {
         "tsConfigPath": "apps/apigateway/tsconfig.app.json",
         "assets": [

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   RessetPasswordRequest,
   RessetPasswordResponse,
@@ -10,6 +10,7 @@ import {
 import { DatabaseService } from '../../../libs/common/src/database/database.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
       },
     });
     if (!uesrFound) {
-      throw new BadRequestException('there is a user with this username');
+      throw new RpcException('there is a user with this username');
     }
 
     const salt = await bcrypt.genSalt(this.saltRounds);
@@ -50,11 +51,11 @@ export class AuthService {
       },
     });
     if (!userFound) {
-      throw new BadRequestException('there is no user with this username');
+      throw new RpcException('there is no user with this username');
     }
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {
-      throw new BadRequestException(
+      throw new RpcException(
         'password provided is not match with the credentials',
       );
     }
@@ -67,7 +68,7 @@ export class AuthService {
   ): Promise<RessetPasswordResponse> {
     const { username, password, newPassword, newPasswordRepeat } = request;
     if (newPassword != newPasswordRepeat) {
-      throw new BadRequestException(
+      throw new RpcException(
         'there is a mis match for new password and confirm password',
       );
     }
@@ -77,13 +78,11 @@ export class AuthService {
       },
     });
     if (!userFound) {
-      throw new BadRequestException('there is not a user with this username');
+      throw new RpcException('there is not a user with this username');
     }
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {
-      throw new BadRequestException(
-        'password provided is invalid please try again',
-      );
+      throw new RpcException('password provided is invalid please try again');
     }
     const salt = await bcrypt.genSalt(this.saltRounds);
     const hashedPassword = await bcrypt.hash(newPassword, salt);

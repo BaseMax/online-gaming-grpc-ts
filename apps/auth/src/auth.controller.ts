@@ -1,11 +1,13 @@
-import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, UseInterceptors, UseFilters } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthServiceControllerMethods } from '@app/common';
+import { ExceptionFilter } from '@app/common';
 // import { UsersServiceControllerMethods } from '@app/common';
 
 @UseInterceptors()
 @AuthServiceControllerMethods()
 @Controller()
+@UseFilters(new ExceptionFilter())
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

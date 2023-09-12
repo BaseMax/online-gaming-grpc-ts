@@ -17,7 +17,7 @@ export class AuthService implements OnModuleInit {
     return this.authService.login(loginDto);
   }
 
-  register(registerDto: SignUpDto) {
+  signup(registerDto: SignUpDto) {
     return this.authService.signUp(registerDto);
   }
 }

@@ -15,7 +15,7 @@ import { join } from 'path';
         options: {
           url: '0.0.0.0:' + '50001',
           package: AUTH_PACKAGE_NAME,
-          protoPath: join(__dirname, '../auth/auth.proto'),
+          protoPath: join(__dirname, '../auth.proto'),
         },
       },
     ]),
@@ -30,7 +30,7 @@ import { join } from 'path';
         options: {
           url: '0.0.0.0:' + '50001',
           package: AUTH_PACKAGE_NAME,
-          protoPath: join(__dirname, '../auth/auth.proto'),
+          protoPath: join(__dirname, '../auth.proto'),
         },
       },
     ]),
