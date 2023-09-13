@@ -33,6 +33,7 @@ export interface FindOneGameResponse {
 
 export interface StartGameRequest {
   creator: string;
+  gameId: string;
 }
 
 export interface StartGameResponse {

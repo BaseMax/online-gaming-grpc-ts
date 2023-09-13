@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package game;
 
-
 service GameService {
   rpc CreateGame (CreateGameRequest) returns (CreateGameResponse) {}
   rpc FindOneGame (FindOneGameRequest) returns (FindOneGameResponse) {}
@@ -13,7 +12,7 @@ service GameService {
 
 
 message Game {
-  string id = 1;
+  string id = 1;  
   string name = 2;
   bool started = 4;
 }
@@ -41,6 +40,7 @@ message FindOneGameResponse {
 
 message StartGameRequest {
   string creator = 1;
+  string gameId = 2;
 }
 
 message StartGameResponse {

@@ -10,7 +10,6 @@ import {
 import { DatabaseService } from '../../../libs/common/src/database/database.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { RpcException } from '@nestjs/microservices';
 import {
   GrpcNotFoundException,
   GrpcAlreadyExistsException,
