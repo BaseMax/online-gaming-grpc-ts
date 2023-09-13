@@ -1,10 +1,18 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseInterceptors,
+  UseFilters,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, SignUpDto } from './dto';
+import { LoginDto, RessetPasswordDto, SignUpDto } from './dto';
 import { GrpcToHttpInterceptor } from 'nestjs-grpc-exceptions';
+import {ExceptionFilter} from '@app/common';
 
 @Controller('auth')
 @UseInterceptors(GrpcToHttpInterceptor)
+@UseFilters(new ExceptionFilter())
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -16,5 +24,10 @@ export class AuthController {
   @Post('signup')
   register(@Body() registerDto: SignUpDto) {
     return this.authService.signup(registerDto);
+  }  
+  
+  @Post('resset-password')
+  resset_password(@Body() ressetPasswordDto: RessetPasswordDto) {
+    return this.authService.resset_password(ressetPasswordDto);
   }
 }

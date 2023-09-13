@@ -11,6 +11,11 @@ import { DatabaseService } from '../../../libs/common/src/database/database.serv
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { RpcException } from '@nestjs/microservices';
+import {
+  GrpcNotFoundException,
+  GrpcAlreadyExistsException,
+  GrpcInvalidArgumentException,
+} from 'nestjs-grpc-exceptions';
 
 @Injectable()
 export class AuthService {
@@ -27,8 +32,8 @@ export class AuthService {
         username: username,
       },
     });
-    if (!uesrFound) {
-      throw new RpcException('there is a user with this username');
+    if (uesrFound) {
+      throw new GrpcAlreadyExistsException('User Found with this user name.');
     }
 
     const salt = await bcrypt.genSalt(this.saltRounds);
@@ -51,11 +56,11 @@ export class AuthService {
       },
     });
     if (!userFound) {
-      throw new RpcException('there is no user with this username');
+      throw new GrpcNotFoundException('there is no user with this username');
     }
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {
-      throw new RpcException(
+      throw new GrpcInvalidArgumentException(
         'password provided is not match with the credentials',
       );
     }
@@ -67,22 +72,24 @@ export class AuthService {
     request: RessetPasswordRequest,
   ): Promise<RessetPasswordResponse> {
     const { username, password, newPassword, newPasswordRepeat } = request;
-    if (newPassword != newPasswordRepeat) {
-      throw new RpcException(
-        'there is a mis match for new password and confirm password',
-      );
-    }
     const userFound = await this.dataBaseService.user.findUnique({
       where: {
         username: username,
       },
     });
     if (!userFound) {
-      throw new RpcException('there is not a user with this username');
+      throw new GrpcNotFoundException('there is not a user with this username');
+    }
+    if (newPassword != newPasswordRepeat) {
+      throw new GrpcInvalidArgumentException(
+        'there is a mis match for new password and confirm password',
+      );
     }
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {
-      throw new RpcException('password provided is invalid please try again');
+      throw new GrpcInvalidArgumentException(
+        'password provided is invalid please try again',
+      );
     }
     const salt = await bcrypt.genSalt(this.saltRounds);
     const hashedPassword = await bcrypt.hash(newPassword, salt);

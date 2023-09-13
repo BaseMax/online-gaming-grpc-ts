@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { LoginDto, SignUpDto } from './dto';
+import { LoginDto, SignUpDto, RessetPasswordDto } from './dto';
 import { AUTH_SERVICE_NAME, AuthServiceClient } from '@app/common';
 import { ClientGrpc } from '@nestjs/microservices';
 
@@ -19,5 +19,9 @@ export class AuthService implements OnModuleInit {
 
   signup(registerDto: SignUpDto) {
     return this.authService.signUp(registerDto);
+  }
+
+  resset_password(ressetPasswordDto: RessetPasswordDto) {
+    return this.authService.ressetPassword(ressetPasswordDto);
   }
 }
