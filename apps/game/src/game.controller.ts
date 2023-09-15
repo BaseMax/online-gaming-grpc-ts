@@ -10,7 +10,16 @@ import {
   StartGameResponse,
   AddUserToGameRequest,
   AddUserToGameResponse,
+  CollectPointRequest,
+  CollectPointResponse,
+  GameFinishResultsRequest,
+  GameFinishResultsResponse,
+  PlayerLeftGameRequest,
+  PlayerLeftGameResponse,
+  ListAvailableGamesRequest,
+  ListAvailableGamesResponse,
 } from '@app/common';
+
 @UseInterceptors()
 @GameServiceControllerMethods()
 @Controller()
@@ -28,4 +37,11 @@ export class GameController {
   addUserToGame(request: AddUserToGameRequest): Promise<AddUserToGameResponse> {
     return this.gameService.addUserToGame(request);
   }
+  collectPoint(request: CollectPointRequest) {}
+
+  gameFinishResults(request: GameFinishResultsRequest) {}
+
+  playerLeftGame(request: PlayerLeftGameRequest) {}
+
+  listAvailableGames(request: ListAvailableGamesRequest) {}
 }

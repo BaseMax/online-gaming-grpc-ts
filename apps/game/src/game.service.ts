@@ -14,6 +14,14 @@ import {
   StartGameResponse,
   AddUserToGameRequest,
   AddUserToGameResponse,
+  CollectPointRequest,
+  CollectPointResponse,
+  GameFinishResultsRequest,
+  GameFinishResultsResponse,
+  PlayerLeftGameRequest,
+  PlayerLeftGameResponse,
+  ListAvailableGamesRequest,
+  ListAvailableGamesResponse,
 } from '@app/common';
 
 @Injectable()
@@ -116,4 +124,12 @@ export class GameService {
     });
     return gameUpdated;
   }
+
+  collectPoint(payload: CollectPointRequest) {}
+
+  gameFinishResults(payload: GameFinishResultsRequest) {}
+
+  playerLeftGame(payload: PlayerLeftGameRequest) {}
+
+  listAvailableGames(payload: ListAvailableGamesRequest) {}
 }

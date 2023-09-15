@@ -7,7 +7,10 @@ service GameService {
   rpc FindOneGame (FindOneGameRequest) returns (FindOneGameResponse) {}
   rpc StartGame (StartGameRequest) returns (StartGameResponse) {}
   rpc AddUserToGame (AddUserToGameRequest) returns (AddUserToGameResponse) {}
-  rpc ListAvailableGames (stream PaginationDto) returns (stream Games) {}
+  rpc CollectPoint(CollectPointRequest) returns (CollectPointResponse) {}
+  rpc GameFinishResults(GameFinishResultsRequest) returns (GameFinishResultsResponse) {}
+  rpc PlayerLeftGame(PlayerLeftGameRequest) returns (PlayerLeftGameResponse) {}
+  rpc ListAvailableGames (ListAvailableGamesRequest) returns (ListAvailableGamesResponse) {}
 }
 
 
@@ -58,17 +61,53 @@ message AddUserToGameResponse {
   string status = 2;
 }
 
-message ListAvailableGamesRequest {
+message CollectPointRequest {
+  int32 playerID = 1 ;
+  int32 gameID = 2;
+  int32 pointCollected = 3;
+}
 
+message CollectPointResponse {
+  bool success = 1;
+  bool gameFinished = 2;
+  bool userWonGame = 3;
+  int32 userWonGameID = 4;
+}
+
+message GameFinishResultsRequest {
+  int32 gameID = 1;
+}
+
+message GameFinishResultsResponse {
+  int32 winner = 1;
+  Users members = 2;
+}
+
+message PlayerLeftGameRequest{
+  int32 playerID  = 1;
+  int32 gameID = 2;
+}
+
+message PlayerLeftGameResponse{ 
+  int32 playerScore = 1;
+}
+
+message ListAvailableGamesRequest {
+  int32 userID = 1;
 }
 
 message ListAvailableGamesResponse {
-
+  Games availableGames = 1;
 }
 
 message Games { 
   repeated Game games = 1;
 }
+
+message Users {
+  repeated int32 users = 1;
+}
+
 
 message PaginationDto {
   int32 page = 1;
