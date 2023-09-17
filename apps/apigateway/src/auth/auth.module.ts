@@ -4,10 +4,23 @@ import { AuthController } from './auth.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AUTH_PACKAGE_NAME } from '@app/common';
 import { join } from 'path';
+import { ConfigService, ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Global()
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    JwtModule.registerAsync({
+      useFactory: (config: ConfigService) => ({
+        global: true,
+        secret: config.getOrThrow('SECRET'),
+        signOptions: { expiresIn: '1d' },
+      }),
+      inject: [ConfigService],
+    }),
     ClientsModule.register([
       {
         name: 'AUTH_PACKAGE',
@@ -23,6 +36,14 @@ import { join } from 'path';
   controllers: [AuthController],
   providers: [AuthService],
   exports: [
+    JwtModule.registerAsync({
+      useFactory: (config: ConfigService) => ({
+        global: true,
+        secret: config.getOrThrow('SECRET'),
+        signOptions: { expiresIn: '1d' },
+      }),
+      inject: [ConfigService],
+    }),
     ClientsModule.register([
       {
         name: 'AUTH_PACKAGE',

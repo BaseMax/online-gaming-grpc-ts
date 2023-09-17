@@ -104,7 +104,12 @@ export class AuthService {
     return { username, token };
   }
 
-  async verifyAccessToken(request: any): Promise<any> {}
+  async verifyAccessToken(request: any): Promise<any> {
+    const verified = this.jwtService.verify(request.token);
+    if(verified){
+      return verified
+    }
+  }
 
   async validateUserById(userId: number): Promise<any> {
     return this.dataBaseService.user.findUnique({ where: { id: userId } });

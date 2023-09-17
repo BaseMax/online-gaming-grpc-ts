@@ -4,7 +4,7 @@ import { GameModule } from './game/game.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 
 @Module({
-  imports: [AuthModule, ],
+  imports: [AuthModule, GameModule],
   controllers: [],
   providers: [],
 })

@@ -52,12 +52,12 @@ export class GameService {
       },
     });
     if (!foundGame) {
-      throw new GrpcNotFoundException('there is no user with this id');
+      throw new GrpcNotFoundException('there is no game with this id');
     }
     return foundGame;
   }
 
-  async StartGame(payload: StartGameRequest): Promise<any> {
+  async StartGame(payload: StartGameRequest): Promise<StartGameResponse> {
     const creatorFound = await this.databaseService.user.findUnique({
       where: {
         id: +payload.creator,
@@ -73,6 +73,12 @@ export class GameService {
     });
     if (!gameFound) {
       throw new GrpcNotFoundException('there is no game with this id');
+    }
+    const creatorId = gameFound.creator;
+    if (creatorId != +payload.creator) {
+      throw new GrpcNotFoundException(
+        'creator id passed is not admin and creator of the game provided by id',
+      );
     }
     const gameUpdated = await this.databaseService.game.update({
       where: {

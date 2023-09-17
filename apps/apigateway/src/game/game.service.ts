@@ -26,8 +26,8 @@ export class GameService {
     return this.gameService.createGame(payload);
   }
 
-  findOneGame(payload: FindOneDto) {
-    return this.gameService.findOneGame(payload);
+  findOneGame(payload: number) {
+    return this.gameService.findOneGame({ id: payload.toString() });
   }
 
   startGame(payload: StartGameDto) {

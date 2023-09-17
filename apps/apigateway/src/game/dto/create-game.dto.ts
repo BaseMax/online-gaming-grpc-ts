@@ -10,10 +10,6 @@ export class CreateGametDto implements CreateGameRequest {
   @IsNotEmpty()
   maxMembers: number;
 
-  @IsNumber()
-  @IsNotEmpty()
-  pointCollected: number;
-
   @IsString()
   @IsNotEmpty()
   name: string;

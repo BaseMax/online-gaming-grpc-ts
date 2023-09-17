@@ -5,6 +5,9 @@ import {
   Post,
   Get,
   Body,
+  Param,
+  ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ExceptionFilter } from '@app/common';
 import { GrpcToHttpInterceptor } from 'nestjs-grpc-exceptions';
@@ -19,6 +22,7 @@ import {
   PlayerLeftDto,
   AvailableGameDto,
 } from './dto';
+import { JwtGuard } from '../auth/guard';
 
 @Controller('game')
 @UseInterceptors(GrpcToHttpInterceptor)
@@ -30,11 +34,12 @@ export class GameController {
     return this.gameService.createGame(payload);
   }
 
-  @Get(':gameID')
-  async finOneGame(@Body() payload: FindOneDto) {
+  @Get('/:gameID')
+  async finOneGame(@Param('gameID', ParseIntPipe) payload: number) {
     return this.gameService.findOneGame(payload);
   }
 
+  @UseGuards(JwtGuard)
   @Post('start-game')
   async startGame(@Body() payload: StartGameDto) {
     return this.gameService.startGame(payload);
