@@ -13,6 +13,7 @@ export class AuthService implements OnModuleInit {
     this.authService =
       this.client.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
   }
+
   login(loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
@@ -23,5 +24,9 @@ export class AuthService implements OnModuleInit {
 
   resset_password(ressetPasswordDto: RessetPasswordDto) {
     return this.authService.ressetPassword(ressetPasswordDto);
+  }
+
+  isUserAdmin(userID: number, gameID: number) {
+    return this.authService.isUserAdmin({ userID, gameID });
   }
 }

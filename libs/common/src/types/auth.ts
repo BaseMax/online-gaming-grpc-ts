@@ -31,6 +31,17 @@ export interface RessetPasswordRequest {
   newPasswordRepeat: string;
 }
 
+export interface IsUserAdminRequest {
+  gameID: number;
+  userID: number;
+}
+
+export interface IsUserAdminResponse {
+  gameID: number;
+  userID: number;
+  status: string;
+}
+
 export interface RessetPasswordResponse {
   username: string;
   token: string;
@@ -46,6 +57,8 @@ export interface AuthServiceClient {
   ressetPassword(
     request: RessetPasswordRequest,
   ): Observable<RessetPasswordResponse>;
+
+  isUserAdmin(request: IsUserAdminRequest): Observable<boolean>;
 }
 
 export interface AuthServiceController {

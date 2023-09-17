@@ -11,18 +11,29 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
+  id       Int     @id @default(autoincrement())
+  username String  @unique
   password String
-  Game     Game?  @relation(fields: [gameId], references: [id])
+  Game     Game?   @relation(fields: [gameId], references: [id])
   gameId   Int?
+  Score    Score[]
 }
 
 model Game {
-  id         Int    @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   name       String
   maxMembers Int
   status     String
   members    User[]
   creator    Int
+  scores     Score[]
+}
+
+model Score {
+  id     Int   @id @default(autoincrement())
+  player User  @relation(fields: [userId], references: [id])
+  score  Int
+  Game   Game? @relation(fields: [gameId], references: [id])
+  gameId Int?
+  userId Int
 }

@@ -116,6 +116,12 @@ export class GameService {
     if (!gameFound) {
       throw new GrpcNotFoundException('there is no game with this id');
     }
+    const scoreForPlayerCreated = await this.databaseService.score.create({
+      data: {
+        userId: memberFound.id,
+        score: 0,
+      },
+    });
     const gameUpdated = await this.databaseService.game.update({
       where: {
         id: +payload.gameId,
@@ -126,12 +132,51 @@ export class GameService {
             id: +payload.userToBeAdded,
           },
         },
+        scores: {
+          connect: {
+            id: scoreForPlayerCreated.id
+          },
+        },
       },
     });
     return gameUpdated;
   }
 
-  collectPoint(payload: CollectPointRequest) {}
+  async collectPoint(payload: CollectPointRequest) {
+    const playerFound = await this.databaseService.user.findUnique({
+      where: {
+        id: payload.playerID,
+      },
+    });
+    if (!playerFound) {
+      throw new GrpcNotFoundException('there is no player with this id');
+    }
+    const gameFound = await this.databaseService.game.findUnique({
+      where: {
+        id: payload.gameID,
+      },
+      include: {
+        members: true,
+      },
+    });
+    if (!gameFound) {
+      throw new GrpcNotFoundException('there is no game with this id');
+    }
+    if (gameFound.status !== 'playing') {
+      throw new GrpcInvalidArgumentException(
+        'game is not in playe yet cannot do this action',
+      );
+    }
+    const updatedGame = await this.databaseService.game.update({
+      where: {
+        id: payload.gameID,
+      },
+      data: {
+        members: {},
+      },
+    });
+    return updatedGame;
+  }
 
   gameFinishResults(payload: GameFinishResultsRequest) {}
 

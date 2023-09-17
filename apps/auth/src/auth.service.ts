@@ -106,8 +106,8 @@ export class AuthService {
 
   async verifyAccessToken(request: any): Promise<any> {
     const verified = this.jwtService.verify(request.token);
-    if(verified){
-      return verified
+    if (verified) {
+      return verified;
     }
   }
 
@@ -121,5 +121,29 @@ export class AuthService {
       username: user.username,
     });
     return token;
+  }
+
+  async isUserAdmin({ userID, gameID }) {
+    const userFound = await this.dataBaseService.user.findUnique({
+      where: {
+        id: userID,
+      },
+    });
+    if (!userFound) {
+      throw new GrpcNotFoundException('there is no user with this id');
+    }
+    const gameFound = await this.dataBaseService.game.findUnique({
+      where: {
+        id: gameID,
+      },
+    });
+    if (!gameFound) {
+      throw new GrpcNotFoundException('there is no game with this id');
+    }
+    const gamesCreateID = gameFound.id;
+    if (userID != gamesCreateID) {
+      return false;
+    }
+    return true;
   }
 }
