@@ -36,4 +36,6 @@ model Score {
   Game   Game? @relation(fields: [gameId], references: [id])
   gameId Int?
   userId Int
+
+  @@unique([userId, gameId], name: "UniqueUserGameScore")
 }

@@ -37,11 +37,21 @@ export class GameController {
   addUserToGame(request: AddUserToGameRequest): Promise<AddUserToGameResponse> {
     return this.gameService.addUserToGame(request);
   }
-  collectPoint(request: CollectPointRequest) {}
+  collectPoint(request: CollectPointRequest): Promise<any> {
+    return this.gameService.collectPoint(request);
+  }
 
-  gameFinishResults(request: GameFinishResultsRequest) {}
+  gameFinishResults(
+    request: GameFinishResultsRequest,
+  ): Promise<GameFinishResultsResponse> {
+    return this.gameService.gameFinishResults(request);
+  }
 
-  playerLeftGame(request: PlayerLeftGameRequest) {}
+  playerLeftGame(request: PlayerLeftGameRequest) {
+    return this.gameService.playerLeftGame(request);
+  }
 
-  listAvailableGames(request: ListAvailableGamesRequest) {}
+  listAvailableGames(request: ListAvailableGamesRequest) {
+    return this.gameService.listAvailableGames(request);
+  }
 }

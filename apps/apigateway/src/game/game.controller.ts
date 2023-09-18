@@ -69,7 +69,7 @@ export class GameController {
 
   @ApiBasicAuth()
   @UseGuards(JwtGuard)
-  @Get('finish-game-result')
+  @Post('finish-game-result')
   async finishGameResult(@Body() payload: GameFinishDto) {
     return this.gameService.gameFinishResults(payload);
   }

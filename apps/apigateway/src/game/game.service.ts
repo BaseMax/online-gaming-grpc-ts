@@ -43,6 +43,7 @@ export class GameService {
   }
 
   gameFinishResults(payload: GameFinishDto) {
+    console.log('payload of gameFinishResults: ', payload)
     return this.gameService.gameFinishResults(payload);
   }
 

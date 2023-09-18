@@ -134,7 +134,7 @@ export class GameService {
         },
         scores: {
           connect: {
-            id: scoreForPlayerCreated.id
+            id: scoreForPlayerCreated.id,
           },
         },
       },
@@ -167,20 +167,120 @@ export class GameService {
         'game is not in playe yet cannot do this action',
       );
     }
-    const updatedGame = await this.databaseService.game.update({
+    const relatedScoreFound = await this.databaseService.score.update({
+      where: {
+        UniqueUserGameScore: {
+          userId: playerFound.id,
+          gameId: gameFound.id,
+        },
+      },
+      data: {
+        score: {
+          increment: payload.pointCollected,
+        },
+      },
+    });
+    return gameFound;
+  }
+
+  async gameFinishResults(payload: GameFinishResultsRequest) {
+    const gameFound = await this.databaseService.game.findUnique({
+      where: {
+        id: payload.gameID,
+      },
+    });
+    console.log('game Found : ', gameFound);
+    if (!gameFound) {
+      throw new GrpcNotFoundException('there is no game with this id');
+    }
+    const finishedGame = await this.databaseService.game.update({
       where: {
         id: payload.gameID,
       },
       data: {
-        members: {},
+        status: 'finished',
       },
     });
-    return updatedGame;
+    const scoresOfThisGame = await this.databaseService.score.findMany({
+      where: {
+        gameId: finishedGame.id,
+      },
+    });
+    if (scoresOfThisGame.length < 1) {
+      throw new GrpcInvalidArgumentException(
+        'this game has no attendance to see the result',
+      );
+    }
+    console.log('schoresOfThisGame: ', scoresOfThisGame);
+    let highestScore = scoresOfThisGame[0];
+    scoresOfThisGame.forEach((score) => {
+      if (highestScore.score < score.score) {
+        highestScore = score;
+      }
+    });
+    console.log('highestScore: ', highestScore);
+    const winner = await this.databaseService.user.findUnique({
+      where: {
+        id: highestScore.userId,
+      },
+    });
+    return {
+      winnerID: highestScore.userId,
+      winnerScore: highestScore.score,
+      winnerName: winner.username,
+    };
   }
 
-  gameFinishResults(payload: GameFinishResultsRequest) {}
+  async playerLeftGame(payload: PlayerLeftGameRequest) {
+    const memberFound = await this.databaseService.user.findUnique({
+      where: {
+        id: +payload.playerID,
+      },
+    });
+    if (!memberFound) {
+      throw new GrpcNotFoundException('there is no member with this id');
+    }
+    const gameFound = await this.databaseService.game.findUnique({
+      where: {
+        id: +payload.gameID,
+      },
+    });
+    if (!gameFound) {
+      throw new GrpcNotFoundException('there is no game with this id');
+    }
+    const relatedScoreFound = await this.databaseService.score.delete({
+      where: {
+        UniqueUserGameScore: {
+          userId: memberFound.id,
+          gameId: gameFound.id,
+        },
+      },
+    });
+    const gameUpdated = await this.databaseService.game.update({
+      where: {
+        id: gameFound.id,
+      },
+      data: {
+        members: {
+          connect: {
+            id: payload.playerID,
+          },
+        },
+        scores: {
+          disconnect: {
+            id: relatedScoreFound.id,
+          },
+        },
+      },
+    });
+    return gameUpdated;
+  }
 
-  playerLeftGame(payload: PlayerLeftGameRequest) {}
-
-  listAvailableGames(payload: ListAvailableGamesRequest) {}
+  async listAvailableGames(payload: ListAvailableGamesRequest) {
+    const availableGameToJoin = await this.databaseService.game.findMany({
+      where: {
+        status: 'pending',
+      },
+    });
+  }
 }

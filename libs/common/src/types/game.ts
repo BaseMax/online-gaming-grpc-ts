@@ -72,8 +72,9 @@ export interface GameFinishResultsRequest {
 }
 
 export interface GameFinishResultsResponse {
-  winner: number;
-  members: Users | undefined;
+  winnerID: number;
+  winnerName : string;
+  winnerScore : number;
 }
 
 export interface PlayerLeftGameRequest {

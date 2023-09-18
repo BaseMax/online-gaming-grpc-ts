@@ -82,8 +82,9 @@ message GameFinishResultsRequest {
 }
 
 message GameFinishResultsResponse {
-  int32 winner = 1;
-  Users members = 2;
+  int32 winnerID = 1;
+  int32 winnerScore = 2;
+  string winnerName = 3;
 }
 
 message PlayerLeftGameRequest{
