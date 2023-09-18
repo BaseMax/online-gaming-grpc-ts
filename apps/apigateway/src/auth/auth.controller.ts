@@ -8,8 +8,10 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto, RessetPasswordDto, SignUpDto } from './dto';
 import { GrpcToHttpInterceptor } from 'nestjs-grpc-exceptions';
-import {ExceptionFilter} from '@app/common';
+import { ExceptionFilter } from '@app/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 @UseInterceptors(GrpcToHttpInterceptor)
 @UseFilters(new ExceptionFilter())
@@ -24,8 +26,8 @@ export class AuthController {
   @Post('signup')
   register(@Body() registerDto: SignUpDto) {
     return this.authService.signup(registerDto);
-  }  
-  
+  }
+
   @Post('resset-password')
   resset_password(@Body() ressetPasswordDto: RessetPasswordDto) {
     return this.authService.resset_password(ressetPasswordDto);

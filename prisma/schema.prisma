@@ -23,7 +23,7 @@ model Game {
   id         Int     @id @default(autoincrement())
   name       String
   maxMembers Int
-  status     String
+  status     String  @default("pending") //pending playing finished canceled
   members    User[]
   creator    Int
   scores     Score[]
