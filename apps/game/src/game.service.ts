@@ -189,7 +189,6 @@ export class GameService {
         id: payload.gameID,
       },
     });
-    console.log('game Found : ', gameFound);
     if (!gameFound) {
       throw new GrpcNotFoundException('there is no game with this id');
     }
@@ -211,14 +210,12 @@ export class GameService {
         'this game has no attendance to see the result',
       );
     }
-    console.log('schoresOfThisGame: ', scoresOfThisGame);
     let highestScore = scoresOfThisGame[0];
     scoresOfThisGame.forEach((score) => {
       if (highestScore.score < score.score) {
         highestScore = score;
       }
     });
-    console.log('highestScore: ', highestScore);
     const winner = await this.databaseService.user.findUnique({
       where: {
         id: highestScore.userId,

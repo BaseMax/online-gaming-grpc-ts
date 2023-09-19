@@ -43,7 +43,11 @@
       "entryFile": "src/main",
       "sourceRoot": "./",
       "compilerOptions": {
-        "tsConfigPath": "apps/leaderboard/tsconfig.app.json"
+        "tsConfigPath": "apps/leaderboard/tsconfig.app.json",
+        "assets": [
+          "proto/*.proto"
+        ],
+        "watchAssets": true
       }
     },
     "game": {

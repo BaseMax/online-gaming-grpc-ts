@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
-  password String
-  Game     Game?   @relation(fields: [gameId], references: [id])
-  gameId   Int?
-  Score    Score[]
+  id            Int          @id @default(autoincrement())
+  username      String       @unique
+  password      String
+  Game          Game?        @relation(fields: [gameId], references: [id])
+  gameId        Int?
+  Score         Score[]
+  LeaderBoard   LeaderBoard? @relation(fields: [leaderBoardId], references: [id])
+  leaderBoardId Int?
 }
 
 model Game {
@@ -38,4 +40,10 @@ model Score {
   userId Int
 
   @@unique([userId, gameId], name: "UniqueUserGameScore")
+}
+
+model LeaderBoard {
+  id      Int    @id @default(autoincrement())
+  name    String @unique
+  Players User[]
 }
