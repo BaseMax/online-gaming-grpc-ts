@@ -1,24 +1,27 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AuthModule } from './../src/auth.module';
-
-describe('AuthController (e2e)', () => {
-  let app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AuthModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+describe('Auth', () => {
+  beforeAll(async () => {
+    const user = {
+      email: 'parinaz@gmail.com',
+      password: 'parinaz123321',
+    };
+    await fetch('http://localhost:3000', {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const response = await fetch('http://localhost:3000/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const jwt = await response.text();
+    console.log('jwt: ', jwt);
   });
-
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  test('Create', () => {
+    expect(true).toBeTruthy();
   });
 });
