@@ -93,14 +93,14 @@ In our online game, players compete to achieve the highest score by collecting i
 
 ## GraphQL
 
-| Request/             | Description                                  | Screenshot                                     |
-| -------------------- | -------------------------------------------- | ---------------------------------------------- |
-| `signup`             | signing up a new user.                       | ![update post](./assets/signup.jpg)            |
+| Request/             | Description                                  | Screenshot                                |
+| -------------------- | -------------------------------------------- | ----------------------------------------- |
+| `signup`             | signing up a new user.                       | ![update post](./assets/signup.jpg)       |
 | `login`              | login a new user.                            | ![update post](./assets/login.jpg)        |
 | `resset_password`    | ressets password of user.                    | ![login](./assets/resset_password.jpg)    |
 | `create_game`        | creates a new game for a user .              | ![login](./assets/create_game.jpg)        |
 | `add_player`         | adds new player (user) to one game.          | ![login](./assets/add_player.jpg)         |
-| `collect_point`      | provides a collecting point for each player. | ![login](./assets/collect_poin.jpg)       |
+| `collect_point`      | provides a collecting point for each player. | ![login](./assets/collect_point.jpg)      |
 | `game_finish`        | finishes a game and returns winner info.     | ![login](./assets/gamefinish.jpg)         |
 | `find_leaderboard`   | finds a leaderboard based on id.             | ![login](./assets/find_leaderboard.jpg)   |
 | `create_leaderboard` | creates a leaderboard.                       | ![login](./assets/leaderboard_create.jpg) |
