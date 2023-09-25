@@ -89,6 +89,22 @@ In our online game, players compete to achieve the highest score by collecting i
 - Game has a start method for admin to run the game
 - Game has a time period in which user admin sets
 
+## HTTP
+
+## GraphQL
+
+| Request/             | Description                                  | Screenshot                                     |
+| -------------------- | -------------------------------------------- | ---------------------------------------------- |
+| `signup`             | signing up a new user.                       | ![update post](./assets/signup.jpg)            |
+| `login`              | login a new user.                            | ![update post](./screenshots/login.jpg)        |
+| `resset_password`    | ressets password of user.                    | ![login](./screenshots/resset_password.jpg)    |
+| `create_game`        | creates a new game for a user .              | ![login](./screenshots/create_game.jpg)        |
+| `add_player`         | adds new player (user) to one game.          | ![login](./screenshots/add_player.jpg)         |
+| `collect_point`      | provides a collecting point for each player. | ![login](./screenshots/collect_poin.jpg)       |
+| `game_finish`        | finishes a game and returns winner info.     | ![login](./screenshots/gamefinish.jpg)         |
+| `find_leaderboard`   | finds a leaderboard based on id.             | ![login](./screenshots/find_leaderboard.jpg)   |
+| `create_leaderboard` | creates a leaderboard.                       | ![login](./screenshots/leaderboard_create.jpg) |
+
 ## Models
 
 ```typescript
