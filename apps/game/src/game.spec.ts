@@ -35,7 +35,7 @@ describe('GameService', () => {
 
   it('should create a game', async () => {
     const userSignUpDto = {
-      username: 'jafar',
+      username: 'jafaryek',
       password: '123321pp',
     };
     const user = await authService.signUp(userSignUpDto);
@@ -47,7 +47,7 @@ describe('GameService', () => {
     const createGameDto = {
       name: 'mysocialgame',
       maxMembers: 4,
-      status: 'created',
+      status: 'pending',
       creator: userWithId.id,
     };
     const game = await service.CreateGame(createGameDto);
@@ -71,7 +71,7 @@ describe('GameService', () => {
     const createGameDto = {
       name: 'mysocialgame',
       maxMembers: 4,
-      status: 'created',
+      status: 'pending',
       creator: userWithId.id,
     };
     const game = await service.CreateGame(createGameDto);
@@ -101,7 +101,7 @@ describe('GameService', () => {
     const createGameDto = {
       name: 'netherlandoffice',
       maxMembers: 4,
-      status: 'created',
+      status: 'pending',
       creator: userWithId.id,
     };
     const game = await service.CreateGame(createGameDto);
@@ -118,8 +118,200 @@ describe('GameService', () => {
     expect(startedGame).toBeDefined();
     expect(startedGame.maxMembers).toBeDefined();
     expect(startedGame.maxMembers).toBe(createGameDto.maxMembers);
-    expect(startedGame.status).toBe('started');
+    expect(startedGame.status).toBe('playing');
   });
 
-  afterAll(async () => {});
+  it('should successfuly add user to the game', async () => {
+    const userSignUpDto = {
+      username: 'jafar',
+      password: '123321pp',
+    };
+    const userToBeAddedDto = {
+      username: 'pooryia',
+      password: '123321pp',
+    };
+    const user = await authService.signUp(userSignUpDto);
+    const userToBeAdded = await authService.signUp(userToBeAddedDto);
+    const userWithId = await DbService.user.findUnique({
+      where: {
+        username: user.username,
+      },
+    });
+    const userToBeAddedWithId = await DbService.user.findUnique({
+      where: {
+        username: userToBeAdded.username,
+      },
+    });
+    const createGameDto = {
+      name: 'mysocialgame',
+      maxMembers: 4,
+      status: 'pending',
+      creator: userWithId.id,
+    };
+    const game = await service.CreateGame(createGameDto);
+    const gameWithId = await DbService.game.findFirst({
+      where: {
+        name: game.name,
+      },
+    });
+    const addUserToGameDto = {
+      userToBeAdded: userToBeAddedWithId.id,
+      gameId: gameWithId.id,
+      creatorId: userWithId.id,
+    };
+    const gameupdated = await service.addUserToGame(addUserToGameDto);
+    expect(gameupdated).toBeDefined();
+    expect(gameupdated.name).toBeDefined();
+    expect(gameupdated.name).toBe(createGameDto.name);
+    expect(gameupdated.status).toBe(createGameDto.status);
+  });
+
+  it('should successfuly collect point for player', async () => {
+    const userSignUpDto = {
+      username: 'eiman',
+      password: '123321pp',
+    };
+    const userToBeAddedDto = {
+      username: 'pelato',
+      password: '123321pp',
+    };
+    const user = await authService.signUp(userSignUpDto);
+    const userToBeAdded = await authService.signUp(userToBeAddedDto);
+    const userWithId = await DbService.user.findUnique({
+      where: {
+        username: user.username,
+      },
+    });
+    const userToBeAddedWithId = await DbService.user.findUnique({
+      where: {
+        username: userToBeAdded.username,
+      },
+    });
+    const createGameDto = {
+      name: 'teraform',
+      maxMembers: 4,
+      status: 'pending',
+      creator: userWithId.id,
+    };
+    const game = await service.CreateGame(createGameDto);
+    const gameWithId = await DbService.game.findFirst({
+      where: {
+        name: game.name,
+      },
+    });
+    const addUserToGameDto = {
+      userToBeAdded: userToBeAddedWithId.id,
+      gameId: gameWithId.id,
+      creatorId: userWithId.id,
+    };
+    const startGameDto = {
+      creator: userWithId.id.toString(),
+      gameId: gameWithId.id.toString(),
+    };
+    const startedGame = await service.StartGame(startGameDto);
+    const gameWithIdStarted = await DbService.game.findFirst({
+      where: {
+        name: game.name,
+      },
+    });
+    const gameupdated = await service.addUserToGame(addUserToGameDto);
+
+    const collectPointDto = {
+      playerID: userToBeAddedWithId.id,
+      gameID: gameWithId.id,
+      pointCollected: 40,
+    };
+    const collectPoint = await service.collectPoint(collectPointDto);
+    expect(collectPoint).toBeDefined();
+    expect(collectPoint.name).toBeDefined();
+    expect(collectPoint.name).toBe(createGameDto.name);
+    expect(collectPoint.status).toBe('playing');
+  });
+
+  it('should successfuly finish a game', async () => {
+    const userSignUpDto = {
+      username: 'ehsan',
+      password: '123321pp',
+    };
+    const userToBeAddedDto = {
+      username: 'javad',
+      password: '123321pp',
+    };
+    const user = await authService.signUp(userSignUpDto);
+    const userToBeAdded = await authService.signUp(userToBeAddedDto);
+    const userWithId = await DbService.user.findUnique({
+      where: {
+        username: user.username,
+      },
+    });
+    const userToBeAddedWithId = await DbService.user.findUnique({
+      where: {
+        username: userToBeAdded.username,
+      },
+    });
+    const createGameDto = {
+      name: 'teenganer',
+      maxMembers: 4,
+      status: 'pending',
+      creator: userWithId.id,
+    };
+    const game = await service.CreateGame(createGameDto);
+    const gameWithId = await DbService.game.findFirst({
+      where: {
+        name: game.name,
+      },
+    });
+    const startGameDto = {
+      creator: userWithId.id.toString(),
+      gameId: gameWithId.id.toString(),
+    };
+    const addUserToGameDto = {
+      userToBeAdded: userToBeAddedWithId.id,
+      gameId: gameWithId.id,
+      creatorId: userWithId.id,
+    };
+    const gameupdated = await service.addUserToGame(addUserToGameDto);
+    const startedGame = await service.StartGame(startGameDto);
+    const collectPointDto = {
+      gameID: gameWithId.id,
+    };
+
+    const finishGame = await service.gameFinishResults(collectPointDto);
+    expect(finishGame).toBeDefined();
+    expect(finishGame.winnerID).toBeDefined();
+    expect(finishGame.winnerID).toBeDefined();
+  });
+
+  it('should successfuly list available games', async () => {
+    const userSignUpDto = {
+      username: 'taghi',
+      password: '123321pp',
+    };
+    const user = await authService.signUp(userSignUpDto);
+    const userWithId = await DbService.user.findUnique({
+      where: {
+        username: user.username,
+      },
+    });
+    const createGameDto = {
+      name: 'teenganer',
+      maxMembers: 4,
+      status: 'pending',
+      creator: userWithId.id,
+    };
+    const game = await service.CreateGame(createGameDto);
+    const games = await DbService.game.findMany();
+    const listAvailableGame = {
+      userID: userWithId.id,
+    };
+    const availableGames = await service.listAvailableGames(listAvailableGame);
+    expect(availableGames).toBeDefined();
+  });
+
+  afterAll(async () => {
+    await DbService.leaderBoard.deleteMany();
+    await DbService.score.deleteMany();
+    await DbService.game.deleteMany();
+    await DbService.user.deleteMany();
+  });
 });

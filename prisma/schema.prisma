@@ -46,4 +46,5 @@ model LeaderBoard {
   id      Int    @id @default(autoincrement())
   name    String @unique
   Players User[]
+  creator Int?
 }
