@@ -43,7 +43,6 @@ export class AuthService {
         password: hashedPassword,
       },
     });
-    console.log('createdUser: ', createdUser);
     const token = await this.assignToken(createdUser);
     return { username, token };
   }
