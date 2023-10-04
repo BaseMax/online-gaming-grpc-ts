@@ -56,7 +56,7 @@
       "entryFile": "src/main",
       "sourceRoot": "./",
       "compilerOptions": {
-        "tsConfigPath": "apps/game/tsconfig.app.json",
+      "tsConfigPath": "apps/game/tsconfig.app.json",
       "assets": [
           "proto/*.proto"
         ],

@@ -6,8 +6,13 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
-  "baseUrl": "./",
   "moduleNameMapper": {
-    "@app/common": "../libs/common/src"
+  "@app/common": "C:/Users/pooya/Desktop/grpc-game/libs/common/src"
+  },
+  "resolver": "jest-module-name-mapper",
+  "globals": {
+    "ts-jest": {
+      "diagnostics": false
+    }
   }
 }

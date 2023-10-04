@@ -85,7 +85,7 @@ export class GameService {
         id: +payload.gameId,
       },
       data: {
-        status: 'started',
+        status: 'playing',
       },
     });
     return gameUpdated;
@@ -102,7 +102,7 @@ export class GameService {
     }
     const memberFound = await this.databaseService.user.findUnique({
       where: {
-        id: +payload.creatorId,
+        id: +payload.userToBeAdded,
       },
     });
     if (!memberFound) {
@@ -119,6 +119,7 @@ export class GameService {
     const scoreForPlayerCreated = await this.databaseService.score.create({
       data: {
         userId: memberFound.id,
+        gameId: gameFound.id,
         score: 0,
       },
     });
@@ -164,15 +165,13 @@ export class GameService {
     }
     if (gameFound.status !== 'playing') {
       throw new GrpcInvalidArgumentException(
-        'game is not in playe yet cannot do this action',
+        'game is not in play yet cannot do this action',
       );
     }
-    const relatedScoreFound = await this.databaseService.score.update({
+    const relatedScoreFound = await this.databaseService.score.updateMany({
       where: {
-        UniqueUserGameScore: {
-          userId: playerFound.id,
-          gameId: gameFound.id,
-        },
+        userId: playerFound.id,
+        gameId: gameFound.id,
       },
       data: {
         score: {
@@ -279,5 +278,6 @@ export class GameService {
         status: 'pending',
       },
     });
+    return availableGameToJoin;
   }
 }
