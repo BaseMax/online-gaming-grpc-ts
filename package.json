@@ -45,7 +45,7 @@
     "ts-protoc-gen": "^0.15.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^10.4.7",
+    "@nestjs/cli": "^11.0.10",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.0",
     "@swc/cli": "^0.5.1",
